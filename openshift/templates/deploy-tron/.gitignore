@@ -1,0 +1,2 @@
+*.pem
+!example.pem

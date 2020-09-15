@@ -1,0 +1,193 @@
+kind: Template
+apiVersion: v1
+objects:
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    spec:
+      host: ${ROUTE_HOST_NAME}
+      port:
+        targetPort: 3000-tcp
+      to:
+        kind: Service
+        name: ${NAME}-${SUFFIX}
+        weight: 100
+      wildcardPolicy: None
+      tls:
+        termination: edge
+    metadata:
+      annotations:
+        openshift.io/host.generated: 'true'
+      labels:
+        app: ${NAME}-${SUFFIX}
+        group: ${NAME}
+      name: ${NAME}-${SUFFIX}
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    spec:
+      lookupPolicy:
+        local: false
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      labels:
+        app: ${NAME}-${SUFFIX}
+        group: ${NAME}
+      name: ${NAME}-${SUFFIX}
+  - apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+    spec:
+      nodeSelector: null
+      output:
+        to:
+          kind: ImageStreamTag
+          name: '${NAME}:${OUTPUT_IMAGE_TAG}'
+      postCommit: {}
+      resources: {}
+      source:
+        contextDir: ${GIT_CONTEXT_DIR}
+        git:
+          ref: ${GIT_REF}
+          uri: ${GIT_URL}
+        type: Git
+      strategy:
+        sourceStrategy:
+          from:
+            kind: ImageStreamTag
+            name: 'nodejs:12'
+            namespace: ${BASE_IMAGE_NAMESPACE}
+        type: Source
+      triggers:
+        - type: ConfigChange
+        - imageChange: {}
+          type: ImageChange
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      labels:
+        app: ${NAME}-${SUFFIX}
+        group: ${NAME}
+      name: ${NAME}-${SUFFIX}
+  - apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+    spec:
+      replicas: 3
+      selector:
+        app: ${NAME}-${SUFFIX}
+        group: ${NAME}
+      strategy:
+        resources: {}
+      template:
+        metadata:
+          annotations:
+            openshift.io/generated-by: OpenShiftNewApp
+          creationTimestamp: null
+          labels:
+            app: ${NAME}-${SUFFIX}
+            group: ${NAME}
+        spec:
+          containers:
+            - image: '${NAME}:${OUTPUT_IMAGE_TAG}'
+              env:
+                - name: PRIVATE_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      key: privatekey
+                      name: ${NAME}-${SUFFIX}
+                - name: WEBHOOK_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      key: WEBHOOK_SECRET
+                      name: ${NAME}-${SUFFIX}
+                - name: WEBHOOK_PROXY_URL
+                  value: ${ROUTE_HOST_NAME}
+                - name: APP_ID
+                  valueFrom:
+                    secretKeyRef:
+                      key: APP_ID
+                      name: ${NAME}-${SUFFIX}
+              name: ${NAME}-${SUFFIX}
+              ports:
+                - containerPort: 3000
+                  protocol: TCP
+              resources: 
+                cpu:
+                  limit: ${CPU_LIMIT}
+                  request: ${CPU_REQUEST}
+                memory:
+                  limit: ${MEMORY_LIMIT}
+                  request: ${MEMORY_REQUEST}
+      test: false
+      triggers:
+        - type: ConfigChange
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - ${NAME}
+            from:
+              kind: ImageStreamTag
+              name: '${NAME}:${OUTPUT_IMAGE_TAG}'
+          type: ImageChange
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      labels:
+        app: ${NAME}-${SUFFIX}
+        group: ${NAME}
+      name: ${NAME}-${SUFFIX}
+  - apiVersion: v1
+    kind: Service
+    spec:
+      ports:
+        - name: 3000-tcp
+          port: 3000
+          protocol: TCP
+          targetPort: 3000
+      selector:
+        app: ${NAME}-${SUFFIX}
+        group: ${NAME}
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      labels:
+        app: ${NAME}-${SUFFIX}
+        group: ${NAME}
+      name: ${NAME}-${SUFFIX}
+parameters:
+- name: NAME
+  description: this is the app name
+  value: deploy-tron
+  required: true
+- name: SUFFIX
+  description: a suffix to further seperate out concurrecnt builds/deploys of this infra code
+  value: prod
+  required: true
+- name: GIT_URL
+  required: true
+  description: the git url where the source code for deploytron exists
+- name: GIT_REF
+  required: true
+  description: the branch of the git repo you are looking to build from
+- name: GIT_CONTEXT_DIR
+  value: '.'
+  description: the context directory for the app source code
+- name: ROUTE_HOST_NAME
+  required: true
+  description: this is the route name for the exposed service. It is also used to pass in to the app runtime as WEBHOOK_URL
+- name: OUTPUT_IMAGE_TAG
+  value: "1.0.0"
+  required: true
+- name: CPU_REQUEST
+  description: this is the reserved cpu per pod
+  value: 100m
+- name: CPU_LIMIT
+  description: this is the burstable amount for the epod
+  value: 140m
+- name: MEMORY_REQUEST
+  description: this is the memory available to the pod
+  value: 100Mb
+- name: MEMORY_LIMIT
+  description: this is the burstable amount of memory for the pod
+  value: 140Mb
+- name: BASE_IMAGE_NAMESPACE
+  value: openshift
+  description: the location of the base image this s2i builds from
