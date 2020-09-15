@@ -2,7 +2,7 @@
 
 > A simplified PR bot that creates github deployments
 
-## Available Commands
+## Available Comman`ds
 
 The base command are:
 - `<botCommand> help`
@@ -50,6 +50,10 @@ The following events are required:
  4. Run dev server `npm run dev`
  5. In order to accept webhook requests you will need to register a `smee.io` channel as described in the [probot getting started docs](https://probot.github.io/docs/development/#configuring-a-github-app)
 
+
+## Building and Deploying on Openshift
+
+Please check out the [Readme](./openshift/README.md)
 ## Configuration
 
 The App is configured by `src/config/index.json`. This is transpiled to `lib/config/index.json` on prod runtime. This can be overwritten via a volume mounted file if need be for runtime config changes.
