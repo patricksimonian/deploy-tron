@@ -86,7 +86,7 @@ objects:
             group: ${NAME}
         spec:
           containers:
-            - image: '${NAME}:${OUTPUT_IMAGE_TAG}'
+            - image: '${IMAGE_REGISTRY}/${IMAGE_NAMESPACE}/${NAME}:${OUTPUT_IMAGE_TAG}'
               env:
                 - name: PRIVATE_KEY
                   valueFrom:
@@ -119,14 +119,6 @@ objects:
       test: false
       triggers:
         - type: ConfigChange
-        - imageChangeParams:
-            automatic: true
-            containerNames:
-              - ${NAME}
-            from:
-              kind: ImageStreamTag
-              name: '${NAME}:${OUTPUT_IMAGE_TAG}'
-          type: ImageChange
     metadata:
       annotations:
         openshift.io/generated-by: OpenShiftNewApp
@@ -191,3 +183,7 @@ parameters:
 - name: BASE_IMAGE_NAMESPACE
   value: openshift
   description: the location of the base image this s2i builds from
+- name: IMAGE_REGISTRY
+  value: image-registry.openshift-image-registry.svc:5000
+- name: IMAGE_NAMESPACE
+  description: the location of the built deploy tron image
