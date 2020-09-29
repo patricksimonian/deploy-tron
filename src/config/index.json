@@ -1,7 +1,7 @@
 {
   "validGithubRoles": ["maintain", "admin", "write"],
-  "botCommand": "/deploy-tron",
-  "microservices": ["web"],
+  "botCommand": "@deploy-tron",
+  "microservices": ["react", "strapi"],
   "environmentSynonyms": {
     "prod": "production",
     "dev": "development",
