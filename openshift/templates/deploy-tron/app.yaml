@@ -158,7 +158,7 @@ objects:
       index.json: |
         {
           "validGithubRoles": ["maintain", "admin", "write"],
-          "botCommand": "/deploy-tron",
+          "botCommand": "@deploy-tron",
           "microservices": ["web"],
           "environmentSynonyms": {
             "prod": "production",
