@@ -107,5 +107,5 @@ export const getLatestEnvironmentStatusesForRef = async (context: Context, ref: 
 export const isEnvironmentAllowedToDeploy = (requiredEnvironments: string[], deploymentStatuses: DeploymentStatusGroup): boolean => {
   if(!requiredEnvironments || requiredEnvironments.length === 0) return true;
 
-  return requiredEnvironments.every(env => deploymentStatuses[env].state === 'success' );
+  return requiredEnvironments.every(env => deploymentStatuses[env] && deploymentStatuses[env].state === 'success' );
 };
