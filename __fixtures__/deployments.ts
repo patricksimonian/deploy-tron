@@ -15,6 +15,21 @@ export const deploymentStatusesPending = {
   }
 }
 
+export const deploymentStatusesPendingWithNoRef = {
+  "repository": {
+    "deployments": {
+      "edges": [
+        {
+          "node": {
+            "latestStatus": "PENDING",
+            "ref": null
+          }
+        }
+      ]
+    }
+  }
+}
+
 export const deploymentStatusesPendingWithSameRef = {
   "repository": {
     "deployments": {

@@ -21,7 +21,7 @@ export const deploy = async (context: Context): Promise<void> => {
   // check for pending deployments in that environment for another ref
   // get head ref from pr
   const ref = await getHeadRefFromPr(context);
-
+  console.log(ref, 'THE REF \n\n\n\n\n asdkjfhasdkljfhalsdf');
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const allowsMultipleDeploysToEnv = config.environmentsThatAllowConcurrentDeploys.findIndex(env => env === environment) > -1;

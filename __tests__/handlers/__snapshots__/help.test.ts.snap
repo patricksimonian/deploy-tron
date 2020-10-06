@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`As a user I can ask the bot for help When I ask for help, I get the help documentation 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "body": "### Available Commands
+
+> _all commands are case sensitive and should be entered one comment at a time. Multiple commands in a single comment will not be processed_
+
+| command | description                                                                                                                                       | example usage                                                                                                  |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| help    | posts this message                                                                                                                                | \`/test help\`                                                                                            |
+| deploy  | Creates a deployment for a microservice to a particular environment. <br /> This is based on several factors that are configurable on my runtime. | \`/test deploy <microservice> to <environment>\` <br /> **eg** <br /> \`/test deploy postgres to prod\` |
+| architecture | discover how to best architect your ci/cd solution while using this bot |  \`/test architecture\` |
+| configuration | learn about available configuration values | \`/test configuration\`  |",
+        "number": 10,
+        "owner": "patricksimonian",
+        "repo": "strapi-demo",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
