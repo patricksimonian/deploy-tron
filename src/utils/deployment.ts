@@ -63,7 +63,15 @@ export const isTherePendingDeploymentForEnvironment = async (context: Context, r
   });
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
-  return data.repository.deployments.edges.filter((edge: LatestStatus) => (edge.node.latestStatus === 'PENDING' && edge.node.ref.name !== ref || edge.node.latestStatus === null && edge.node.ref.name !== ref));
+
+  return data.repository.deployments.edges.filter((edge: LatestStatus) => {
+    const hasRef = edge.node.ref !== null;
+    return (
+      hasRef && edge.node.latestStatus === 'PENDING' && edge.node.ref.name !== ref ||
+      hasRef && edge.node.latestStatus === 'IN_PROGRESS' && edge.node.ref.name !== ref ||
+      hasRef && edge.node.latestStatus === null && edge.node.ref.name !== ref
+    );
+  });
 };
 
 

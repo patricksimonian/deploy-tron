@@ -74,14 +74,10 @@ describe('Gh Utilities', () => {
   });
 
   test('returns head ref from pull request', async () => {
-    const context = new Context(
-      pullRequestComment,
-      github as any,
-      {} as any,
-    );
+    const context = new Context(pullRequestComment, github as any, {} as any);
 
-    github.pulls.get.mockReturnValue(Promise.resolve({data: pullRequest}));
+    github.pulls.get.mockReturnValue(Promise.resolve({ data: pullRequest }));
 
     expect(await getHeadRefFromPr(context)).toBe(pullRequest.head.ref);
-  })
+  });
 });
