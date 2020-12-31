@@ -91,7 +91,7 @@ objects:
               configMap:
                 name: ${NAME}-${SUFFIX}-config
           containers:
-            - image: '${IMAGE_REGISTRY}/${IMAGE_NAMESPACE}/${NAME}:${OUTPUT_IMAGE_TAG}'
+            - image: '${IMAGE_REGISTRY}/${IMAGE_NAMESPACE}/${NAME}-${SUFFIX}:${OUTPUT_IMAGE_TAG}'
               env:
                 - name: PRIVATE_KEY
                   valueFrom:
