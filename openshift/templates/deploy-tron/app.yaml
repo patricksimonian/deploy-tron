@@ -40,7 +40,7 @@ objects:
       output:
         to:
           kind: ImageStreamTag
-          name: '${NAME}:${OUTPUT_IMAGE_TAG}'
+          name: '${NAME}-${SUFFIX}:${OUTPUT_IMAGE_TAG}'
       postCommit: {}
       resources: {}
       source:
