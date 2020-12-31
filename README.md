@@ -53,7 +53,7 @@ The following events are required:
 
 ## Building and Deploying on Openshift
 
-Please check out the [Readme](./openshift/README.md)
+Please check out the [Readme](https://github.com/patricksimonian/deploy-tron/blob/master/openshift/templates/deploy-tron/README.md)
 ## Configuration
 
 The App is configured by `src/config/index.json`. This is transpiled to `lib/config/index.json` on prod runtime. This can be overwritten via a volume mounted file if need be for runtime config changes.
