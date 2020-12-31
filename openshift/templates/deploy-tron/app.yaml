@@ -228,3 +228,4 @@ parameters:
   value: image-registry.openshift-image-registry.svc:5000
 - name: IMAGE_NAMESPACE
   description: the location of the built deploy tron image
+  required: true
