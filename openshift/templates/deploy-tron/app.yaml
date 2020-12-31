@@ -207,7 +207,7 @@ parameters:
   required: true
   description: this is the route name for the exposed service. It is also used to pass in to the app runtime as WEBHOOK_URL
 - name: OUTPUT_IMAGE_TAG
-  value: "1.0.0"
+  value: latest
   required: true
 - name: CPU_REQUEST
   description: this is the reserved cpu per pod
