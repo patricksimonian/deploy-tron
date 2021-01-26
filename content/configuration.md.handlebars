@@ -1,7 +1,12 @@
+{{!-- 
+  variables:
+  configFilePath: string
+ --}}
+
 ## Configuration
 
-These are the available properties that are available to configure the bot. If you are not an owner of the bot codebase but are hosting this bot, you 
-can always mount a copy of your config file at bot runtime at the path `<app-root>/lib/config/index.json`. In Kuberenetes based deployments this would be via `ConfigMap`.
+These are the available properties that are available to configure the bot. Create a `JSON` format file at 
+this path {{ configFilePath }} in your default branch.
 
 
 - `environments: string[]`: This is a list of the valid github deployment environments your app supports. This will prevent deploy commands to unsupported environments from triggering a workflow. The available environments are __production__, __staging__, __qa__, __development__. Take a look at github deployment docs for more info.
@@ -14,9 +19,6 @@ For example:
   }
 }
 ```
-- `validGithubRoles: string[]`: This is a list of valid github permission roles a user can have. This will validate that a command issued by a user __will run__. By __default__ the valid roles are `['maintain', 'admin', 'write']`
-
-- `botCommand: string`: This is the issuing command that the bot will look for to prepend every command. This can be any __single word__. Recommend prepending a `/` to the command to seperate it from english text. __Defaults__ to `/deploy-tron`
 
 - `microservices: string[]`: This is a list of 'microservices' that your repositories codebase supports. This passed into any __create deployment__ as a `payload` which will allow your ci/cd tool of choice to filter github deployments. The microservice list is also used to validate the deploy command `deploy <microservice> to <env>`
 

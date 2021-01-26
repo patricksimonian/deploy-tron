@@ -1,6 +1,11 @@
 import { Context } from 'probot';
-import { CONFIG as config } from '../constants';
-import {  PrStatusMessage, DeploymentStatus, RepoOwner } from '../constants/types';
+import { CONFIG } from '../constants';
+import {
+  PrStatusMessage,
+  DeploymentStatus,
+  RepoOwner,
+  DeployTronConfig,
+} from '../constants/types';
 
 /**
  * returns the repo and owner from the context
@@ -20,9 +25,10 @@ export const getRepoAndOwnerFromContext = (context: Context): RepoOwner => {
 export const getHeadRefFromPr = async (context: Context): Promise<string> => {
   const { repo, owner } = getRepoAndOwnerFromContext(context);
 
-  const res = await context.github.pulls.get({owner,
+  const res = await context.octokit.pulls.get({
+    owner,
     repo,
-    pull_number: context.payload.issue.number
+    pull_number: context.payload.issue.number,
   });
 
   return res.data.head.ref;
@@ -39,7 +45,7 @@ export const isCommenterAllowedToAction = async (
   // get user name and see if they are a member
   const { login: username } = context.payload.comment.user;
   // get their permissions for this repo
-  const { data } = await context.github.repos.getCollaboratorPermissionLevel({
+  const { data } = await context.octokit.repos.getCollaboratorPermissionLevel({
     username,
     repo,
     owner,
@@ -47,7 +53,7 @@ export const isCommenterAllowedToAction = async (
   // get allowable permissions to perform the action
   // no matter what, read users should never be allowed to trigger changes
   return (
-    config.validGithubRoles.includes(data.permission) &&
+    CONFIG.validGithubRoles.includes(data.permission) &&
     data.permission !== 'read'
   );
 };
@@ -75,19 +81,22 @@ export const isBotCommand = (context: Context, botCommand: string): boolean => {
   return re.test(body.trim());
 };
 
-
-export const createComment = (context: Context, body: string): Promise<unknown> => {
+export const createComment = (
+  context: Context,
+  body: string,
+): Promise<unknown> => {
   const params = context.issue({ body });
-  return context.github.issues.createComment(params);
+  return context.octokit.issues.createComment(params);
 };
 
-
-export const extractPrsThatArePendingForComment = (deployments: DeploymentStatus[]): PrStatusMessage[] => {
+export const extractPrsThatArePendingForComment = (
+  deployments: DeploymentStatus[],
+): PrStatusMessage[] => {
   // group deployment by ref
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const prs = deployments.reduce((group: any, deployment) => {
     const branch = deployment.node.ref.name;
-    if(!group[branch]) {
+    if (!group[branch]) {
       let payload;
       try {
         // for some reason the graphql api returns the json string with way more \ then is needed
@@ -99,20 +108,41 @@ export const extractPrsThatArePendingForComment = (deployments: DeploymentStatus
         };
       }
       group[branch] = {
-        ...deployment.node, 
-        payload
+        ...deployment.node,
+        payload,
       };
     }
     return group;
   }, {});
 
-  return Object.keys(prs).map(branch => {
-    return ({
+  return Object.keys(prs).map((branch) => {
+    return {
       pr: prs[branch].payload.pr,
       branch,
-      state: prs[branch].latestStatus !== null ? prs[branch].latestStatus.state : 'no status found'
-    });
+      state:
+        prs[branch].latestStatus !== null
+          ? prs[branch].latestStatus.state
+          : 'no status found',
+    };
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getDeployTronConfig = async (
+  context: Context,
+): Promise<DeployTronConfig> => {
+  const { repo, owner } = getRepoAndOwnerFromContext(context);
 
+  const response: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any;
+  } = await context.octokit.repos.getContent({
+    path: CONFIG.configFileName,
+    repo,
+    owner,
+  });
+
+  const decoded = Buffer.from(response.data.content, 'base64');
+
+  return JSON.parse(decoded.toString());
+};

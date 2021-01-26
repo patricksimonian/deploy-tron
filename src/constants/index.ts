@@ -4,7 +4,7 @@ export const COMMANDS = {
   help: 'help',
   deploy: 'deploy',
   architecture: 'architecture',
-  configuration: 'configuration'
+  configuration: 'configuration',
 };
 
 export const ULTRA_SECRET_COMMANDS = {
@@ -23,16 +23,23 @@ export const DEFAULT_SYNONYMS = {
   dev: ENVIRONMENTS.development,
 };
 
-export const BASE_CONFIG = {
-  requiredContexts: {},
-  environmentSynonyms: {},
-  maxDeploymentsToLookupForPending: 10,
-  validGithubRoles: ["maintain", "admin", "write"],
-  environmentsThatAllowConcurrentDeploys: [],
-  botCommand: '/deploy-tron'
-};
-
 export const CONFIG = {
-  ...BASE_CONFIG,
   ...config,
 };
+
+export const SAMPLE_CONFIG = {
+  "validGithubRoles": ["maintain", "admin", "write"],
+  "microservices": ["postgres", "redis"],
+  "environments": ["production", "development", "staging"],
+  "environmentSynonyms": {
+    "prod": "production",
+    "dev": "development",
+    "test": "staging"
+  },
+  "requiredEnvironments": {
+    "development": [],
+    "staging": ["development"],
+    "production": ["staging", "development"]
+  },
+  "environmentsThatAllowConcurrentDeploys": ["development"]
+}

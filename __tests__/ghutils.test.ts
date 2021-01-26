@@ -41,8 +41,8 @@ describe('Gh Utilities', () => {
       Promise.resolve({ data: maintainUser }),
     );
     expect(await isCommenterAllowedToAction(context)).toBe(true);
-    expect(await isCommenterAllowedToAction(context)).toBe(true);
-    expect(await isCommenterAllowedToAction(context)).toBe(true);
+    expect(await isCommenterAllowedToAction(context)).toBe(false);
+    expect(await isCommenterAllowedToAction(context)).toBe(false);
   });
 
   test('returns false if user permission is not allowable', async () => {

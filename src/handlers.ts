@@ -1,7 +1,10 @@
 // eslint-disable-next-line
 import { Context } from 'probot';
 
-import { isCommenterAllowedToAction, isCommentFromPr } from './utils/ghutils';
+import {
+  isCommenterAllowedToAction,
+  isCommentFromPr,
+} from './utils/ghutils';
 import { getCommandFromComment, isCommandValid } from './utils/stringutils';
 import { COMMANDS, ULTRA_SECRET_COMMANDS } from './constants';
 import { deploy } from './handlers/deploy';
@@ -10,10 +13,8 @@ import { help, configuration } from './handlers/help';
 import { architecture } from './handlers/architecture';
 import { welcomeMessage } from './utils/messages';
 
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handlePrOpened = async (context: Context): Promise<any> => {
-
   return welcomeMessage(context);
 };
 
@@ -24,7 +25,6 @@ export const handlePrComment = async (context: Context): Promise<any> => {
   const isFromPR = isCommentFromPr(context);
   const command = getCommandFromComment(commentBody);
   const commandIsValid = isCommandValid(command);
-  
 
   if (!context.isBot && commenterCanAction && isFromPR && commandIsValid) {
     switch (command) {
@@ -35,7 +35,7 @@ export const handlePrComment = async (context: Context): Promise<any> => {
       case COMMANDS.architecture:
         return architecture(context);
       case COMMANDS.configuration:
-          return configuration(context);
+        return configuration(context);
       case ULTRA_SECRET_COMMANDS.knockknock:
         return knockknock(context);
     }

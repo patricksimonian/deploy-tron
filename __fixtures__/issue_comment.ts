@@ -1,4 +1,5 @@
-export const issueComment = {
+import { WebhookEvent } from "@octokit/webhooks";
+export const issueComment:WebhookEvent = {
   name: 'issue_comment',
   id: '343',
   payload: {
@@ -267,34 +268,5 @@ export const issueComment = {
       id: 123,
       node_id: 'id',
     },
-  },
-  github: {
-    log: {},
-    actions: {},
-    activity: {},
-    apps: {},
-    checks: {},
-    codesOfConduct: {},
-    emojis: {},
-    gists: {},
-    git: {},
-    gitignore: {},
-    interactions: {},
-    issues: {},
-    licenses: {},
-    markdown: {},
-    meta: {},
-    migrations: {},
-    oauthAuthorizations: {},
-    orgs: {},
-    projects: {},
-    pulls: {},
-    rateLimit: {},
-    reactions: {},
-    repos: {},
-    search: {},
-    teams: {},
-    users: {},
-    retry: {},
   },
 };

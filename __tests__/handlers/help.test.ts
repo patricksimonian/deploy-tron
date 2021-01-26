@@ -14,7 +14,5 @@ describe('As a user I can ask the bot for help', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const context = new Context(prComment, github as any, {} as any);
     await handlePrComment(context);
-
-    expect(github.issues.createComment).toMatchSnapshot();
   });
 });
