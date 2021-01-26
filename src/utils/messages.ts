@@ -3,7 +3,7 @@ import Handlebars from 'handlebars';
 import { readFileSync } from 'fs';
 import path from 'path';
 import { extractPrsThatArePendingForComment, getRepoAndOwnerFromContext, createComment } from './ghutils';
-import {  DeploymentStatus } from '../constants/types';
+import {  DeploymentStatus, DeployTronConfig } from '../constants/types';
 import { CONFIG } from '../constants';
 
 export const pendingDeploymentsExistMessage = (context: Context, deployments: DeploymentStatus[]): Promise<unknown> => {
@@ -19,14 +19,14 @@ export const pendingDeploymentsExistMessage = (context: Context, deployments: De
   return createComment(context, template({ repo, owner, pullRequests }));
 };
 
-export const helpMessage = (context: Context): Promise<unknown> => {
+export const helpMessage = (context: Context, config: DeployTronConfig): Promise<unknown> => {
   const buffer = readFileSync(path.join(__dirname, '../../content/help.md.handlebars'));
   const template = Handlebars.compile(buffer.toString());
 
   return createComment(context, template({
     botCommand: CONFIG.botCommand,
-    microserviceExample: CONFIG.microservices[0],
-    environmentExample: Object.keys(CONFIG.environmentSynonyms)[0],
+    microserviceExample: config.microservices[0],
+    environmentExample: Object.keys(config.environmentSynonyms)[0],
   }));
 };
 
@@ -35,7 +35,7 @@ export const dependantDeploymentsMessage = (context: Context, environment: strin
   const template = Handlebars.compile(buffer.toString());
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  return createComment(context, template({environment, requiredEnvironments: CONFIG.requiredEnvironments[environment] }));
+  return createComment(context, template({environment, requiredEnvironments: config.requiredEnvironments[environment] }));
 };
 
 export const deploymentCreatedMessage = (context: Context, deployment: any): Promise<unknown> => {
@@ -48,14 +48,14 @@ export const deploymentCreatedMessage = (context: Context, deployment: any): Pro
 };
 
 
-export const architectureMessage = (context: Context): Promise<unknown> => {
+export const architectureMessage = (context: Context, config: DeployTronConfig): Promise<unknown> => {
   const buffer = readFileSync(path.join(__dirname, '../../content/architecture.md.handlebars'));
   const template = Handlebars.compile(buffer.toString());
 
   return createComment(context, template({
     botCommand: CONFIG.botCommand,
-    microservice: CONFIG.microservices[0],
-    environment: Object.keys(CONFIG.environmentSynonyms)[0],
+    microservice: config.microservices[0],
+    environment: Object.keys(config.environmentSynonyms)[0],
   }));
 };
 
@@ -64,7 +64,7 @@ export const configurationMessage = (context: Context): Promise<unknown> => {
   const buffer = readFileSync(path.join(__dirname, '../../content/configuration.md.handlebars'));
   const template = Handlebars.compile(buffer.toString());
 
-  return createComment(context, template({}));
+  return createComment(context, template({configFilePath: CONFIG.configFileName}));
 };
 
 
@@ -74,3 +74,11 @@ export const welcomeMessage = (context: Context): Promise<unknown> => {
 
   return createComment(context, template({ botCommand: CONFIG.botCommand }));
 };
+
+
+export const badConfigMessage = async (context: Context): Promise<unknown> => {
+  const buffer = readFileSync(path.join(__dirname, '../../content/badConfig.md.handlebars'));
+  const template = Handlebars.compile(buffer.toString());
+
+  return createComment(context, template({ botCommand: CONFIG.botCommand, configFilePath: CONFIG.configFileName }));
+}

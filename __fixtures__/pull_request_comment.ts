@@ -1,4 +1,6 @@
-export const pullRequestComment = {
+
+import { WebhookEvent } from "@octokit/webhooks";
+export const pullRequestComment:WebhookEvent = {
   name: 'issue_comment',
   id: 'baa93500-dd8d-11ea-94ef-eec1009a92aa',
   payload: {
@@ -274,34 +276,5 @@ export const pullRequestComment = {
       id: 11217370,
       node_id: 'MDIzOkludGVncmF0aW9uSW5zdGFsbGF0aW9uMTEyMTczNzA=',
     },
-  },
-  github: {
-    log: {},
-    actions: {},
-    activity: {},
-    apps: {},
-    checks: {},
-    codesOfConduct: {},
-    emojis: {},
-    gists: {},
-    git: {},
-    gitignore: {},
-    interactions: {},
-    issues: {},
-    licenses: {},
-    markdown: {},
-    meta: {},
-    migrations: {},
-    oauthAuthorizations: {},
-    orgs: {},
-    projects: {},
-    pulls: {},
-    rateLimit: {},
-    reactions: {},
-    repos: {},
-    search: {},
-    teams: {},
-    users: {},
-    retry: {},
   },
 };

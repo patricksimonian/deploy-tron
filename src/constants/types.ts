@@ -1,9 +1,6 @@
-
-export type ENVIRONMENTS = "development" | "staging" | "qa" | "production";
-
 export type synonyms = {
-  [any: string]: ENVIRONMENTS
-}
+  [any: string]: ENVIRONMENTS;
+};
 
 export interface ParsedDeployCommand {
   microservice: string;
@@ -12,15 +9,15 @@ export interface ParsedDeployCommand {
 
 export interface LatestStatus {
   node: {
-    latestStatus: string
+    latestStatus: string;
     ref: {
-      name: string
-    }
-  }
+      name: string;
+    };
+  };
 }
 
 export interface Deployment {
-  id: string|number;
+  id: string | number;
   environment: string;
 }
 
@@ -33,28 +30,49 @@ export interface DeploymentGroup {
   [key: string]: any;
 }
 
-
 export interface DeploymentStatus {
   node: {
-    payload: string
-    latestStatus: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      state: string
-    } | string 
+    payload: string;
+    latestStatus:
+      | {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          state: string;
+        }
+      | string;
     ref: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      name: string
-    }
-  }
+      name: string;
+    };
+  };
 }
 
 export interface PrStatusMessage {
-  state: string
-  pr: number
-  branch: string
+  state: string;
+  pr: number;
+  branch: string;
 }
 
 export interface RepoOwner {
   repo: string;
   owner: string;
+}
+
+export type ENVIRONMENTS = 'production' | 'development' | 'staging' | 'qa';
+
+export interface DeployTronConfig {
+  microservices: string[];
+  environmentSynonyms: {
+    [key in string]?: ENVIRONMENTS | string;
+  };
+  requiredEnvironments: {
+    development: string[];
+    staging: string[];
+    production: string[];
+  };
+  environmentsThatAllowConcurrentDeploys?: string[];
+  environments: string[];
+  requiredContexts?: {
+    [key in ENVIRONMENTS]?: string[];
+  };
+  maxDeploymentsToLookupForPending?: number;
 }

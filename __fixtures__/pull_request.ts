@@ -1,3 +1,4 @@
+
 export const pullRequest = {
   url: 'https://api.github.com/repos/patricksimonian/strapi-demo/pulls/11',
   id: 468070805,
@@ -5,7 +6,8 @@ export const pullRequest = {
   html_url: 'https://github.com/patricksimonian/strapi-demo/pull/11',
   diff_url: 'https://github.com/patricksimonian/strapi-demo/pull/11.diff',
   patch_url: 'https://github.com/patricksimonian/strapi-demo/pull/11.patch',
-  issue_url: 'https://api.github.com/repos/patricksimonian/strapi-demo/issues/11',
+  issue_url:
+    'https://api.github.com/repos/patricksimonian/strapi-demo/issues/11',
   number: 11,
   state: 'open',
   locked: false,
@@ -19,16 +21,20 @@ export const pullRequest = {
     url: 'https://api.github.com/users/patricksimonian',
     html_url: 'https://github.com/patricksimonian',
     followers_url: 'https://api.github.com/users/patricksimonian/followers',
-    following_url: 'https://api.github.com/users/patricksimonian/following{/other_user}',
+    following_url:
+      'https://api.github.com/users/patricksimonian/following{/other_user}',
     gists_url: 'https://api.github.com/users/patricksimonian/gists{/gist_id}',
-    starred_url: 'https://api.github.com/users/patricksimonian/starred{/owner}{/repo}',
-    subscriptions_url: 'https://api.github.com/users/patricksimonian/subscriptions',
+    starred_url:
+      'https://api.github.com/users/patricksimonian/starred{/owner}{/repo}',
+    subscriptions_url:
+      'https://api.github.com/users/patricksimonian/subscriptions',
     organizations_url: 'https://api.github.com/users/patricksimonian/orgs',
     repos_url: 'https://api.github.com/users/patricksimonian/repos',
     events_url: 'https://api.github.com/users/patricksimonian/events{/privacy}',
-    received_events_url: 'https://api.github.com/users/patricksimonian/received_events',
+    received_events_url:
+      'https://api.github.com/users/patricksimonian/received_events',
     type: 'User',
-    site_admin: false
+    site_admin: false,
   },
   body: '',
   created_at: '2020-08-14T16:19:51Z',
@@ -43,24 +49,29 @@ export const pullRequest = {
   labels: [],
   milestone: null,
   draft: false,
-  commits_url: 'https://api.github.com/repos/patricksimonian/strapi-demo/pulls/11/commits',
-  review_comments_url: 'https://api.github.com/repos/patricksimonian/strapi-demo/pulls/11/comments',
-  review_comment_url: 'https://api.github.com/repos/patricksimonian/strapi-demo/pulls/comments{/number}',
-  comments_url: 'https://api.github.com/repos/patricksimonian/strapi-demo/issues/11/comments',
-  statuses_url: 'https://api.github.com/repos/patricksimonian/strapi-demo/statuses/038dade51d78ccf77d396793410d54af438ca7ae',
+  commits_url:
+    'https://api.github.com/repos/patricksimonian/strapi-demo/pulls/11/commits',
+  review_comments_url:
+    'https://api.github.com/repos/patricksimonian/strapi-demo/pulls/11/comments',
+  review_comment_url:
+    'https://api.github.com/repos/patricksimonian/strapi-demo/pulls/comments{/number}',
+  comments_url:
+    'https://api.github.com/repos/patricksimonian/strapi-demo/issues/11/comments',
+  statuses_url:
+    'https://api.github.com/repos/patricksimonian/strapi-demo/statuses/038dade51d78ccf77d396793410d54af438ca7ae',
   head: {
     label: 'patricksimonian:patricksimonian-patch-1',
     ref: 'patricksimonian-patch-1',
     sha: '038dade51d78ccf77d396793410d54af438ca7ae',
     user: [],
-    repo: []
+    repo: [],
   },
   base: {
     label: 'patricksimonian:master',
     ref: 'master',
     sha: '1dde852b72aaa1e62d1f8cd5281208761c254e78',
     user: [],
-    repo: []
+    repo: [],
   },
   _links: {
     self: [],
@@ -70,7 +81,7 @@ export const pullRequest = {
     review_comments: [],
     review_comment: [],
     commits: [],
-    statuses: []
+    statuses: [],
   },
   author_association: 'OWNER',
   active_lock_reason: null,
@@ -85,5 +96,5 @@ export const pullRequest = {
   commits: 1,
   additions: 2,
   deletions: 0,
-  changed_files: 1
-}
+  changed_files: 1,
+};

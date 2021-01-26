@@ -1,6 +1,9 @@
-import { CONFIG as config } from '../constants';
-import { COMMANDS, DEFAULT_SYNONYMS, ENVIRONMENTS } from '../constants';
-import type { ParsedDeployCommand, PrStatusMessage } from '../constants/types';
+import { COMMANDS, CONFIG, DEFAULT_SYNONYMS, ENVIRONMENTS } from '../constants';
+import type {
+  DeployTronConfig,
+  ParsedDeployCommand,
+  PrStatusMessage,
+} from '../constants/types';
 import { getRepoAndOwnerFromContext } from './ghutils';
 import { Context } from 'probot';
 
@@ -10,7 +13,7 @@ import { Context } from 'probot';
  * @returns {String}
  */
 export const getCommandFromComment = (comment: string): string => {
-  return comment.replace(config.botCommand, '').trim().split(' ')[0];
+  return comment.replace(CONFIG.botCommand, '').trim().split(' ')[0];
 };
 
 export const isCommandValid = (command: string): boolean =>
@@ -23,12 +26,15 @@ export const isCommandValid = (command: string): boolean =>
  */
 export const extractDeployCommandValues = (
   command: string,
+  config: DeployTronConfig,
 ): ParsedDeployCommand | null => {
   const cmd = command.trim();
   const microServicesString = config.microservices.join('|');
-  const environmentsString = config.environments.concat(Object.keys(config.environmentSynonyms)).join('|');
+  const environmentsString = config.environments
+    .concat(Object.keys(config.environmentSynonyms))
+    .join('|');
   const re = new RegExp(
-    `^${config.botCommand} deploy (${microServicesString}) to (${environmentsString})$`,
+    `^${CONFIG.botCommand} deploy (${microServicesString}) to (${environmentsString})$`,
   );
 
   // if the command does not match the pattern return null
@@ -42,24 +48,33 @@ export const extractDeployCommandValues = (
   };
 };
 
-
-
-export const getEnvFromSynonym = (env: string): string => {
-  const synonyms: { [any: string]: string} = { ...DEFAULT_SYNONYMS,  ...ENVIRONMENTS, ...config.environmentSynonyms };
+export const getEnvFromSynonym = (
+  env: string,
+  config: DeployTronConfig,
+): string => {
+  const synonyms: { [any: string]: string } = {
+    ...DEFAULT_SYNONYMS,
+    ...ENVIRONMENTS,
+    ...config.environmentSynonyms,
+  };
 
   return synonyms[env];
 };
 
-
-
-export const formlatestStatusTable = (context: Context, statuses: PrStatusMessage[]): string => {
+export const formlatestStatusTable = (
+  context: Context,
+  statuses: PrStatusMessage[],
+): string => {
   const { repo, owner } = getRepoAndOwnerFromContext(context);
   const head = `
   | pr   | state | branch |
   | ---- | ----  | ---- |`;
-  const body = 
-    statuses.map(status => `
+  const body = statuses
+    .map(
+      (status) => `
     | [#${status.pr}](https://github.com/${owner}/${repo}/pull/${status.pr}) | ${status.state} | ${status.branch} |
-    `).join('\n');
+    `,
+    )
+    .join('\n');
   return head.concat(body);
 };

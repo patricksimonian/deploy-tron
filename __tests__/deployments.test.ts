@@ -15,7 +15,7 @@ import {
   getLatestEnvironmentStatusesForRef,
   isEnvironmentAllowedToDeploy,
 } from '../src/utils/deployment';
-import config from '../__fixtures__/config.json';
+import deployTronConfig from '../__fixtures__/deployTronConfig.json';
 
 describe('Deployment Helpers', () => {
   test('isTherePendingDeploymentForEnvironment returns [] when pending deployments do not have refs', async () => {
@@ -30,6 +30,7 @@ describe('Deployment Helpers', () => {
       'development',
       'bar',
       'owner',
+      deployTronConfig
     );
     expect(isPending).toEqual([]);
   });
@@ -45,6 +46,7 @@ describe('Deployment Helpers', () => {
       'development',
       '123123',
       'bar',
+      deployTronConfig
     );
     expect(isPending).toEqual([
       deploymentStatusesPending.repository.deployments.edges[0],
@@ -64,6 +66,7 @@ describe('Deployment Helpers', () => {
       'development',
       'bar',
       'owner',
+      deployTronConfig
     );
     expect(isPending).toEqual([]);
   });
@@ -80,6 +83,7 @@ describe('Deployment Helpers', () => {
       'development',
       'foo',
       'bar',
+      deployTronConfig
     );
     expect(isPending).toEqual([]);
   });
@@ -112,7 +116,7 @@ describe('Deployment Helpers', () => {
   test('isEnvironmentAllowedToDeploy returns true when required env are met', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const environments = config.requiredEnvironments['prod'];
+    const environments = deployTronConfig.requiredEnvironments['prod'];
     const statuses = {
       production: { state: 'success' },
       staging: { state: 'success' },

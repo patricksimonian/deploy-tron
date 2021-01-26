@@ -1,7 +1,12 @@
+{{!-- 
+  variables:
+  configFilePath: string
+ --}}
+
 ## Configuration
 
-These are the available properties that are available to configure the bot. If you are not an owner of the bot codebase but are hosting this bot, you 
-can always mount a copy of your config file at bot runtime at the path `<app-root>/lib/config/index.json`. In Kuberenetes based deployments this would be via `ConfigMap`.
+These are the available properties that are available to configure the bot. Create a `JSON` format file at 
+this path {{ configFilePath }} in your default branch
 
 
 - `environments: string[]`: This is a list of the valid github deployment environments your app supports. This will prevent deploy commands to unsupported environments from triggering a workflow. The available environments are __production__, __staging__, __qa__, __development__. Take a look at github deployment docs for more info.

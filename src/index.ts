@@ -1,8 +1,7 @@
-import { Application } from 'probot'; // eslint-disable-line no-unused-vars
+import { Probot } from 'probot';
 import { handlePrComment, handlePrOpened } from './handlers';
 
-export = (app: Application): void => {
-
+export = (app: Probot): void => {
   app.on('issue_comment.created', handlePrComment);
 
   app.on('pull_request.opened', handlePrOpened);
@@ -12,5 +11,3 @@ export = (app: Application): void => {
   // To get your app running against GitHub, see:
   // https://probot.github.io/docs/development/
 };
-
-//

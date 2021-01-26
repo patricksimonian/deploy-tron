@@ -1,0 +1,12 @@
+{{!-- 
+  variables
+  botCommand: string,
+  configFilePath: string
+ --}}
+### Bad or no Config found
+I require that you have a {{ configFilePath }} configuration file in order for me to work my magic.
+
+You are getting this message because:
+- A: I couldn't find the file at {{ configFilePath }}
+- B: It's invalid JSON
+- C: It didn't validate correctly (in this case run `{{ botCommand }} configuration` to learn more)

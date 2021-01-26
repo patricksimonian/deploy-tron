@@ -3,9 +3,13 @@ module.exports = {
     browser: true,
     es6: true,
     'jest/globals': true,
-    'jest': true,
+    jest: true,
   },
-  extends: [ 'plugin:@typescript-eslint/recommended', 'prettier/@typescript-eslint', 'prettier'],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'prettier/@typescript-eslint',
+    'prettier',
+  ],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -15,6 +19,6 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: [ 'jest', 'prettier'],
+  plugins: ['jest', 'prettier'],
   rules: {},
 };

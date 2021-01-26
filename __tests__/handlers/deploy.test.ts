@@ -1,6 +1,8 @@
-import { Probot, Octokit } from 'probot';
+import { Probot, ProbotOctokit } from 'probot';
+
 import nock from 'nock';
 import { pullRequestComment } from '../../__fixtures__/pull_request_comment';
+import config from '../../__fixtures__/config.json';
 import {
   deploymentStatusesPending,
   deploymentStatusesSuccess,
@@ -11,6 +13,7 @@ import { pullRequest } from '../../__fixtures__/pull_request';
 import { replaceCommentBodyWithCommand } from '../helpers';
 import { adminUser } from '../../__fixtures__/collaborator';
 import app from '../../src';
+import { deployTronConfig } from '../../__fixtures__/contents';
 
 describe('As a user I can ask the bot to deploy my microservice', () => {
   let probot: Probot;
@@ -18,11 +21,13 @@ describe('As a user I can ask the bot to deploy my microservice', () => {
   beforeEach(() => {
     nock.disableNetConnect();
     probot = new Probot({
-      id: 1,
       githubToken: 'test',
-      Octokit,
+      Octokit: ProbotOctokit.defaults({
+        retry: { enabled: false },
+        throttle: { enabled: false },
+      }),
     });
-    probot.load(app);
+    app(probot);
   });
 
   afterEach(() => {
@@ -48,6 +53,8 @@ describe('As a user I can ask the bot to deploy my microservice', () => {
     const mock = nock('https://api.github.com')
       .get(`/repos/${owner}/${repo}/collaborators/${user}/permission`)
       .reply(200, adminUser)
+      .get(`/repos/${owner}/${repo}/contents/${config.configFileName}`)
+      .reply(200, deployTronConfig)
       .get(`/repos/${owner}/${repo}/deployments`)
       .reply(201);
 
@@ -83,6 +90,8 @@ describe('As a user I can ask the bot to deploy my microservice', () => {
       .reply(200, adminUser)
       .get(`/repos/${owner}/${repo}/pulls/${number}`)
       .reply(200, pullRequest)
+      .get(`/repos/${owner}/${repo}/contents/${config.configFileName}`)
+      .reply(200, deployTronConfig)
       .post(`/graphql`)
       .reply(200, { data: deploymentStatusesPending })
       .post(`/repos/${owner}/${repo}/issues/${number}/comments`)
@@ -130,6 +139,8 @@ describe('As a user I can ask the bot to deploy my microservice', () => {
       .reply(200, pullRequest)
       .post(`/graphql`)
       .reply(200, { data: deploymentStatusesSuccess })
+      .get(`/repos/${owner}/${repo}/contents/${config.configFileName}`)
+      .reply(200, deployTronConfig)
       .post(`/repos/${owner}/${repo}/issues/${number}/comments`)
       .reply(200)
       .persist()
