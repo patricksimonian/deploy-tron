@@ -81,7 +81,7 @@ export const deploy = async (context: Context): Promise<void> => {
     );
 
     if (!canDeploy) {
-      await dependantDeploymentsMessage(context, environment);
+      await dependantDeploymentsMessage(context, environment, config);
       return;
     }
 
@@ -98,7 +98,7 @@ export const deploy = async (context: Context): Promise<void> => {
       // @ts-ignore
        requiredContexts || [],
     );
-
+    context.log(response);
     await deploymentCreatedMessage(context, response.data);
   } catch (e) {
     console.error(e);
