@@ -7,6 +7,7 @@ export const help = async (context: Context): Promise<any> => {
   let config = null;
   try {
     config = await getDeployTronConfig(context);
+    // validate config
   } catch(e) {
     config = SAMPLE_CONFIG;
   }

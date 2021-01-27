@@ -30,7 +30,7 @@ export const helpMessage = (context: Context, config: DeployTronConfig): Promise
   }));
 };
 
-export const dependantDeploymentsMessage = (context: Context, environment: string): Promise<unknown> => {
+export const dependantDeploymentsMessage = (context: Context, environment: string, config: DeployTronConfig): Promise<unknown> => {
   const buffer = readFileSync(path.join(__dirname, '../../content/requiredEnvironments.md.handlebars'));
   const template = Handlebars.compile(buffer.toString());
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
