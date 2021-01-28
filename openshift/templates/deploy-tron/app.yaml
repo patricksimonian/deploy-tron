@@ -157,27 +157,9 @@ objects:
     data:
       index.json: |
         {
-          "validGithubRoles": ["maintain", "admin", "write"],
+          "configFileName": ".deploytronrc",
           "botCommand": "@deploy-tron",
-          "microservices": ["web"],
-          "environmentSynonyms": {
-            "prod": "production",
-            "dev": "development",
-            "test": "staging"
-          },
-          "requiredEnvironments": {
-            "development": [],
-            "staging": ["development"],
-            "production": ["development", "staging"]
-          },
-          "environmentsThatAllowConcurrentDeploys": ["development"],
-          "environments": ["production", "staging", "development"],
-          "requiredContexts": {
-            "development": [],
-            "staging": [],
-            "production": []
-          },
-          "maxDeploymentsToLookupForPending": 10
+          "validGithubRoles": ["admin", "write"]
         }
     kind: ConfigMap
     metadata:
